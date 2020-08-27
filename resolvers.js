@@ -56,7 +56,7 @@ const resolvers = {
           'x-hasura-default-role': 'user',
           'x-hasura-allowed-roles': ['user']
         },
-      }, process.env.JWT_SECRET, { algorithm: "RS256"})
+      }, process.env.JWT_SECRET)
 
       return { token }
     },
@@ -77,7 +77,7 @@ const resolvers = {
             'x-hasura-default-role': 'user',
             'x-hasura-allowed-roles': ['user']
           }
-        }, process.env.JWT_SECRET, { algorithm: "RS256" })
+        }, process.env.JWT_SECRET)
 
         return { token }
       } else {
