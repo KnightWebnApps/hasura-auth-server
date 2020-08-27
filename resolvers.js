@@ -55,8 +55,8 @@ const resolvers = {
           'x-hasura-user-id': user.id,
           'x-hasura-default-role': 'user',
           'x-hasura-allowed-roles': ['user']
-        }
-      }, process.env.JWT_SECRET)
+        },
+      }, process.env.JWT_SECRET, { algorithm: "RS256"})
 
       return { token }
     },
