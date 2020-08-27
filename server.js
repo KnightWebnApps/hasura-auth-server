@@ -22,6 +22,7 @@ const typeDefs = gql`
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  introspection: true,
   context: ({ req }) => {
     const userId = getUserId(req)
     return { ...req, userId }
