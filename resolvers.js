@@ -31,9 +31,9 @@ const ME = `
 
 const signOptions = {
   issuer: "Restaurant Example Co", //* Company Name That Issues The Token
-  //* audience: "",  // URL of website
-  algorithm: "RS256", //* Allows for Pem keys to be read properly,
-  expiresIn: '24hr'
+  // audience: "",  ///* URL of website
+  //algorithm: "RS256", //* Allows for Pem keys to be read properly,
+  expiresIn: '24hr' //* Token expiration
 }
 
 const resolvers = {
