@@ -25,7 +25,7 @@ const SIGNUP = `
 
 const ME = `
   query($id: uuid) {
-    user(where:{id: {_eq: $id}}) { email }
+    user(where:{id: {_eq: $id}}) { email, favorite_order { id } }
   }
 `
 
