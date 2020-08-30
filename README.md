@@ -5,8 +5,10 @@ Simple Auth Server For Signup &amp; Login Mutation
 ## Setup
 
 1. npm install
-2. Create public and private keys 
+2. Create Private key 
 3. Change Business Details for token signature
+4. Deploy 
+5. Add Remote Schema to Hasura
 
 **Required Schema**
 Table Name: `User`
@@ -24,17 +26,18 @@ CREATE TABLE public."user" (
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_email_key UNIQUE (email);
-    
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_pkey PRIMARY KEY (id);
 ```
 
-**Queries**
+### Queries
+
 ```
 me { email } // Used for login check
 ```
 
-**Mutations**
+### Mutations
+
 ```
 login(email: String, password: String) { token }
 signup(email: String, password: String) { token }
