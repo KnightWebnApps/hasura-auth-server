@@ -1,4 +1,5 @@
 const { GraphQLClient } = require('graphql-request')
+const fs = require('fs')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
@@ -28,6 +29,13 @@ const ME = `
   }
 `
 
+const signOptions = {
+  issuer: "Restaurant Example Co", //* Company Name That Issues The Token
+  //* audience: "",  // URL of website
+  algorithm: "RS256", //* Allows for Pem keys to be read properly,
+  expiresIn: '24hr'
+}
+
 const resolvers = {
   Query: {
     me: async (_, args, req) => {
@@ -56,7 +64,7 @@ const resolvers = {
           'x-hasura-default-role': 'user',
           'x-hasura-allowed-roles': ['user']
         },
-      }, process.env.JWT_SECRET)
+      }, process.env.PRIVATE_KEY, signOptions)
 
       return { token }
     },
@@ -77,7 +85,7 @@ const resolvers = {
             'x-hasura-default-role': 'user',
             'x-hasura-allowed-roles': ['user']
           }
-        }, process.env.JWT_SECRET)
+        }, process.env.PRIVATE_KEY, signOptions)
 
         return { token }
       } else {
