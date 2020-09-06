@@ -13,7 +13,7 @@ const graphql = new GraphQLClient(process.env.ENDPOINT, {
 
 const LOGIN = `
   query($email: String) {
-    user(where:{email: {_eq: $email}}) { id password }
+    user(where:{email: {_eq: $email}}) { id password is_team_member }
   }
 `
 
@@ -78,12 +78,16 @@ const resolvers = {
       const valid = await bcrypt.compare(password, user.password)
 
       if (valid) {
+
+        const role = user.is_team_member ? 'team_member' : 'user';
+        const roles = [role];
+
         const token = jwt.sign({
           userId: user.id,
           'https://hasura.io/jwt/claims': {
             'x-hasura-user-id': user.id,
-            'x-hasura-default-role': 'user',
-            'x-hasura-allowed-roles': ['user']
+            'x-hasura-default-role': role,
+            'x-hasura-allowed-roles': roles
           }
         }, process.env.PRIVATE_KEY, signOptions)
 
