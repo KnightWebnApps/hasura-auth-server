@@ -18,10 +18,9 @@ const LOGIN = `
 `
 
 const SIGNUP = `
-  mutation($email: String, $password: String) {
-    insert_user(objects: { email: $email, password: $password }) { returning { id }}
-  }
-`
+  mutation($name: String, $email: String, $password: String){
+    insert_user( objects:{ name: $name email: $email password: $password } ){ returning { id } } }
+`;
 
 const ME = `
   query($id: uuid) {
@@ -50,10 +49,10 @@ const resolvers = {
     }
   },
   Mutation: {
-    signup: async (_, { email, password }) => {
+    signup: async (_, { email, password, name }) => {
       const hashedPassword = await bcrypt.hash(password, 10)
 
-      const user = await graphql.request(SIGNUP, { email, password: hashedPassword }).then(data => {
+      const user = await graphql.request(SIGNUP, { email, password: hashedPassword, name }).then(data => {
         return data.insert_user.returning[0]
       })
 
