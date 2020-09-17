@@ -10,6 +10,7 @@ const typeDefs = gql`
   type Mutation {
     signup(email: String, password: String, name: String): AuthPayload!
     login(email: String, password: String): AuthPayload!
+    deviceLogin(email: String, password: String): AuthPayload!
   }
   type AuthPayload {
     token: String
@@ -17,7 +18,7 @@ const typeDefs = gql`
   type User {
     email: String
   }
-`
+`;
 
 const server = new ApolloServer({
   typeDefs,

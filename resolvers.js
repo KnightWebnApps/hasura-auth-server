@@ -17,6 +17,16 @@ const LOGIN = `
   }
 `
 
+const DEVICELOGIN = `
+  query($email: String){
+    device(where: {email: {_eq: $email}}){
+      id
+      email
+      password
+    }
+  }
+`;
+
 const SIGNUP = `
   mutation($name: String, $email: String, $password: String){
     insert_user( objects:{ name: $name email: $email password: $password } ){ returning { id } } }
@@ -27,6 +37,19 @@ const ME = `
     user(where:{id: {_eq: $id}}) { email, favorite_order { id } }
   }
 `
+
+const DEVICESIGNUP = `
+  mutation($email: String, $password: String){
+    insert_device(objects:{
+      email: $email
+      password: $password
+    }){
+      returning{
+        id
+      }
+    }
+  }
+`;
 
 const signOptions = {
   issuer: "Restaurant Example Co", //* Company Name That Issues The Token
@@ -66,6 +89,37 @@ const resolvers = {
       }, process.env.PRIVATE_KEY, signOptions)
 
       return { token }
+    },
+    deviceLogin: async (_, { email, password }, req) => {
+      
+      const device = await graphql.request(DEVICELOGIN, { email })
+        .then((data) => {
+          return data.device[0];
+        });
+
+      if (!device) throw new Error("No such device found.");
+
+      const valid = await bcrypt.compare(password, device.password);
+
+      if (valid) {
+        const token = jwt.sign(
+          {
+            deviceId: device.id,
+            "https://hasura.io/jwt/claims": {
+              "x-hasura-user-id": device.id,
+              "x-hasura-default-role": "device",
+              "x-hasura-allowed-roles": ["device"],
+            },
+          },
+          process.env.PRIVATE_KEY,
+          signOptions
+        );
+
+        return { token };
+      } else {
+        throw new Error("Invalid password.");
+      }
+
     },
     login: async (_, { email, password }) => {
       const user = await graphql.request(LOGIN, { email }).then(data => {
