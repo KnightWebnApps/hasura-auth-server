@@ -13,7 +13,7 @@ const graphql = new GraphQLClient(process.env.ENDPOINT, {
 
 const LOGIN = `
   query($email: String) {
-    user(where:{email: {_eq: $email}}) { id password is_team_member }
+    user(where:{email: {_eq: $email}}) { id password is_team_member is_manager }
   }
 `
 
