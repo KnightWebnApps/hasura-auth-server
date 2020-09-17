@@ -38,18 +38,7 @@ const ME = `
   }
 `
 
-const DEVICESIGNUP = `
-  mutation($email: String, $password: String){
-    insert_device(objects:{
-      email: $email
-      password: $password
-    }){
-      returning{
-        id
-      }
-    }
-  }
-`;
+
 
 const signOptions = {
   issuer: "Restaurant Example Co", //* Company Name That Issues The Token
@@ -132,8 +121,16 @@ const resolvers = {
 
       if (valid) {
 
-        const role = user.is_team_member ? 'team_member' : 'user';
-        const roles = [role];
+        let role
+        let roles 
+
+        if(user.is_manager){
+          role = 'manager'
+          roles = ['manager']
+        }else{
+          role = user.is_team_member ? 'team_member' : 'user';
+          roles = [role];
+        }
 
         const token = jwt.sign({
           userId: user.id,
