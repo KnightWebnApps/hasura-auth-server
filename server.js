@@ -17,6 +17,9 @@ const typeDefs = gql`
   }
   type User {
     email: String
+    favorite_order_id: String
+    reward_points: Int
+    name: String
   }
 `;
 

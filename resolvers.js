@@ -33,9 +33,15 @@ const SIGNUP = `
 `;
 
 const ME = `
-  query($id: uuid) {
-    user(where:{id: {_eq: $id}}) { email, favorite_order { id } }
+  query ($id: uuid) {
+  user(where: {id: {_eq: $id}}) {
+    email
+    favorite_order_id
+    reward_points
+    name
   }
+}
+
 `
 
 
