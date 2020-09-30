@@ -56,7 +56,7 @@ const signOptions = {
 const resolvers = {
   Query: {
     me: async (_, args, req) => {
-      console.log(req.headers.x-hasura-user-id)
+      console.log(req.headers['x - hasura - user - id'])
       if (req.userId) {
         const user = await graphql.request(ME, { id: req.userId }).then(data => {
           return data.user[0]
